@@ -9,6 +9,6 @@ todoRouter
   .get('/:todoId', todoController.get)
   .put('/:todoId', todoController.update)
   .delete('/:todoId', todoController.remove)
-  .put('/:todoId/toggle', todoController.toggleCompleted)
+  .patch('/:todoId/toggle', todoController.toggleCompleted)
 
 export default todoRouter

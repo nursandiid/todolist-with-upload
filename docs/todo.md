@@ -3,6 +3,10 @@
 ## Get All Todos
 Endpoint : GET /api/todos
 
+Query Params :
+- `is_completed` : 1, 0 optional
+- `has_due_date` : 1, 0 optional
+
 Response Body :
 ```json
 {
@@ -152,5 +156,44 @@ Response Body Error :
 ```json
 {
     "message": "Todo is not found"
+}
+```
+
+## Toggle Completed Todo
+Endpoint : PATCH /api/todos/:todoId/toggle
+
+Request Params :
+`todoId`
+
+Request Body :
+```json
+{
+    "is_completed": 1
+}
+```
+
+Response Body Success :
+```json
+{
+    "data": {
+        "_id": "6540ad607acb765a04fd9a55",
+        "todo": "Todo 1 updated",
+        "due_date": "new Date()",
+        "is_completed": true
+    },
+    "message": "Updated"
+}
+```
+
+Response Body Error :
+```json
+{
+    "errors": [
+        {
+            "name": "is_completed",
+            "message": "is_completed is required",
+        }
+    ],
+    "message": "Unprocessable Entities"
 }
 ```

@@ -185,7 +185,7 @@ describe('DELETE /api/todos/:todoId', () => {
   })
 })
 
-describe('PUT /api/todos/:todoId/toggle', () => {
+describe('PATCH /api/todos/:todoId/toggle', () => {
   beforeEach(async () => {
     await createTestTodo()
   })
@@ -197,7 +197,7 @@ describe('PUT /api/todos/:todoId/toggle', () => {
   it('should can update todo to be completed', async () => {
     const todo = await getTestTodo()
     const result = await supertest(web)
-      .put(`/api/todos/${todo._id}/toggle`)
+      .patch(`/api/todos/${todo._id}/toggle`)
       .send({
         is_completed: 1,
       })
@@ -209,7 +209,7 @@ describe('PUT /api/todos/:todoId/toggle', () => {
   it('should can update todo to be not completed', async () => {
     const todo = await getTestTodo()
     const result = await supertest(web)
-      .put(`/api/todos/${todo._id}/toggle`)
+      .patch(`/api/todos/${todo._id}/toggle`)
       .send({
         is_completed: 0,
       })
