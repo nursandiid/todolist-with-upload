@@ -1,68 +1,22 @@
-# NodeJS Express Starter Pack
+# NodeJS Express TodoList with Upload
 
-This is a simple starter pack project with NodeJS & Express. There are several libraries includes in this project as default :
+A demo project todolist with NodeJS & Express. There is feature to upload single or multiple file
 
-- jest
-- supertest
-- joi
-- cors
-- dotenv
+## Endpoints :
+Todo Endpoints :
+- GET /api/todos
+- POST /api/todos
+- GET /api/todos/{todoId}
+- PUT /api/todos/{todoId}
+- DELETE /api/todos/{todoId}
 
-## Folder structure
-```sh
- .
-├──  src
-│   ├──  applications
-│   │   ├──  database.js
-│   │   └──  web.js
-│   ├──  controllers
-│   ├──  middleware
-│   │   └──  error.middleware.js
-│   ├──  models
-│   ├──  responses
-│   │   ├──  error.response.js
-│   │   └──  success.response.js
-│   ├──  routes
-│   ├──  validations
-│   │   └──  validation.js
-│   └──  server.js
-├──  test
-│   ├──  feature
-│   │   └──  welcome.test.js
-│   └──  unit
-├──  babel.config.json
-├──  package-lock.json
-├──  package.json
-└──  README.md
-```
+Upload Endpoints :
+- GET /api/todos/:todoId/files
+- POST /api/todos/:todoId/files
+- GET /api/todos/:todoId/files/:fileId
+- PUT /api/todos/:todoId/files/:fileId
+- DELETE /api/todos/:todoId/files/:fileId
 
-## Installation
-
-Install required packages.
-```sh
-npm install
-```
-
-Create a new .env file and edit the credentials there.
-```sh
-cp .env.example .env
-```
-
-## Testing
-You can try it by running the unit tests or testing manually using postman.
-```sh
-npx jest
-```
-
-Run your app.
-If you already have nodemon installed you can run this.
-```sh
-npm start
-```
-
-Or if not, you can run this.
-```sh
-node src/server.js
-```
-
-That's it.
+### API Spec
+- [Todo API](./docs/todo.md)
+- [Upload API](./docs/upload.md)

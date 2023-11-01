@@ -8,7 +8,12 @@ import express from 'express'
  * @param {number} status
  * @returns
  */
-const successResponse = (res, data = [], message = 'Success', status = 200) => {
+const successResponse = (
+  res,
+  data = null,
+  message = 'Success',
+  status = 200
+) => {
   return res
     .status(status)
     .json({

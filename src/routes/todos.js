@@ -1,0 +1,13 @@
+import express from 'express'
+import todoController from '../controllers/todo.controller.js'
+
+const todoRouter = express.Router()
+
+todoRouter
+  .get('/', todoController.getAll)
+  .post('/', todoController.create)
+  .get('/:todoId', todoController.get)
+  .put('/:todoId', todoController.update)
+  .delete('/:todoId', todoController.remove)
+
+export default todoRouter

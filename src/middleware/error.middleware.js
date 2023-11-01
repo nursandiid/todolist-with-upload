@@ -1,14 +1,14 @@
 import Joi from 'joi'
 import express from 'express'
-import ErrorResponse from '../responses/error.response.js'
+import ErrorMsg from '../errors/message.error.js'
 
 /**
- * 
- * @param {Joi.ValidationError|ErrorResponse|Error} err 
- * @param {express.Request} req 
- * @param {express.Response} res 
- * @param {express.NextFunction} next 
- * @returns 
+ *
+ * @param {Joi.ValidationError|ErrorMsg|Error} err
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
  */
 const errorMiddleware = async (err, req, res, next) => {
   if (!err) {
@@ -29,7 +29,7 @@ const errorMiddleware = async (err, req, res, next) => {
         }),
       })
       .end()
-  } else if (err instanceof ErrorResponse) {
+  } else if (err instanceof ErrorMsg) {
     res
       .status(err.status)
       .json({
