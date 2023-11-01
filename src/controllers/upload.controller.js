@@ -10,7 +10,7 @@ import successResponse from '../responses/success.response.js'
 import Todo from '../models/Todo.js'
 import Upload from '../models/Upload.js'
 import ErrorMsg from '../errors/message.error.js'
-import { removeFileInStorage } from '../utils.js'
+import { removeFileInStorage } from '../utils/helpers.js'
 
 const todoIdMustExists = async (todoId) => {
   validate(todoIdValidation, todoId)

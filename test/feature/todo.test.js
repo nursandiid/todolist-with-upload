@@ -15,6 +15,7 @@ afterAll(async () => {
 
 describe('GET /api/todos', () => {
   beforeEach(async () => {
+    await removeTestDummyTodos()
     await createTestDummyTodos()
   })
 
@@ -28,13 +29,23 @@ describe('GET /api/todos', () => {
     expect(result.status).toBe(200)
     expect(result.body.data.length).toBe(10)
   })
+  
+  it('should can get todos by filter params', async () => {
+    const result = await supertest(web).get('/api/todos').query({
+      is_completed: 1,
+      has_due_date: 0
+    })
+
+    expect(result.status).toBe(200)
+    expect(result.body.data.length).toBe(5)
+  })
 })
 
 describe('POST /api/todos', () => {
   beforeEach(async () => {
     await removeTestTodo()
   })
-  
+
   afterEach(async () => {
     await removeTestTodo()
   })
@@ -45,8 +56,7 @@ describe('POST /api/todos', () => {
 
     const result = await supertest(web).post('/api/todos').send({
       todo: 'Todo 1',
-      due_date: dueDate,
-      is_completed: false,
+      due_date: dueDate
     })
 
     expect(result.status).toBe(201)
@@ -55,8 +65,7 @@ describe('POST /api/todos', () => {
 
   it('should reject create new todo with invalid fields', async () => {
     const result = await supertest(web).post('/api/todos').send({
-      todo: '',
-      is_completed: false,
+      todo: ''
     })
 
     expect(result.status).toBe(422)
@@ -113,7 +122,7 @@ describe('PUT /api/todos/:todoId', () => {
     const result = await supertest(web)
       .put('/api/todos/' + todo._id)
       .send({
-        todo: 'Todo 1 updated'
+        todo: 'Todo 1 updated',
       })
 
     expect(result.status).toBe(200)
@@ -128,19 +137,19 @@ describe('PUT /api/todos/:todoId', () => {
     const result = await supertest(web)
       .put('/api/todos/' + todo._id)
       .send({
-        todo: 'Todo 1 updated'
+        todo: 'Todo 1 updated',
       })
 
     expect(result.status).toBe(404)
     expect(result.body.message).toBe('Todo is not found')
   })
-  
+
   it('should reject update spesific todo with invalid fields', async () => {
     const todo = await getTestTodo()
     const result = await supertest(web)
       .put('/api/todos/' + todo._id)
       .send({
-        todo: ''
+        todo: '',
       })
 
     expect(result.status).toBe(422)
@@ -159,8 +168,7 @@ describe('DELETE /api/todos/:todoId', () => {
 
   it('should can delete spesific todo by todoId', async () => {
     const todo = await getTestTodo()
-    const result = await supertest(web)
-      .delete('/api/todos/' + todo._id)
+    const result = await supertest(web).delete('/api/todos/' + todo._id)
 
     expect(result.status).toBe(204)
     expect(result.body.data).toBeFalsy()
@@ -170,10 +178,43 @@ describe('DELETE /api/todos/:todoId', () => {
     const todo = await getTestTodo()
     await removeTestTodo()
 
-    const result = await supertest(web)
-      .delete('/api/todos/' + todo._id)
+    const result = await supertest(web).delete('/api/todos/' + todo._id)
 
     expect(result.status).toBe(404)
     expect(result.body.message).toBe('Todo is not found')
+  })
+})
+
+describe('PUT /api/todos/:todoId/toggle', () => {
+  beforeEach(async () => {
+    await createTestTodo()
+  })
+
+  afterEach(async () => {
+    await removeTestTodo()
+  })
+
+  it('should can update todo to be completed', async () => {
+    const todo = await getTestTodo()
+    const result = await supertest(web)
+      .put(`/api/todos/${todo._id}/toggle`)
+      .send({
+        is_completed: 1,
+      })
+
+    expect(result.status).toBe(200)
+    expect(result.body.data.is_completed).toBeTruthy()
+  })
+  
+  it('should can update todo to be not completed', async () => {
+    const todo = await getTestTodo()
+    const result = await supertest(web)
+      .put(`/api/todos/${todo._id}/toggle`)
+      .send({
+        is_completed: 0,
+      })
+
+    expect(result.status).toBe(200)
+    expect(result.body.data.is_completed).toBeFalsy()
   })
 })

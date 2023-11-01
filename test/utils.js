@@ -23,7 +23,7 @@ const createTestDummyTodos = async () => {
   for (let i = 1; i <= 10; i++) {
     todos.push({
       todo: `Todo ${i}`,
-      is_completed: false,
+      is_completed: i % 2 == 0,
     })
   }
 

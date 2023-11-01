@@ -20,6 +20,7 @@ afterAll(async () => {
 describe('GET /api/todos/:todoId/uploads', () => {
   beforeEach(async () => {
     await createTestTodo()
+    await removeTestDummyUploads()
     await createTestDummyUploads()
   })
 
