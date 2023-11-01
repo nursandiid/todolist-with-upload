@@ -15,7 +15,6 @@ afterAll(async () => {
 
 describe('GET /api/todos', () => {
   beforeEach(async () => {
-    await removeTestDummyTodos()
     await createTestDummyTodos()
   })
 
@@ -32,6 +31,10 @@ describe('GET /api/todos', () => {
 })
 
 describe('POST /api/todos', () => {
+  beforeEach(async () => {
+    await removeTestTodo()
+  })
+  
   afterEach(async () => {
     await removeTestTodo()
   })
@@ -102,7 +105,7 @@ describe('PUT /api/todos/:todoId', () => {
   })
 
   afterEach(async () => {
-    await removeTestDummyTodos()
+    await removeTestTodo()
   })
 
   it('should can update spesific todo by todoId', async () => {
@@ -151,7 +154,7 @@ describe('DELETE /api/todos/:todoId', () => {
   })
 
   afterEach(async () => {
-    await removeTestDummyTodos()
+    await removeTestTodo()
   })
 
   it('should can delete spesific todo by todoId', async () => {

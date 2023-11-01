@@ -1,6 +1,7 @@
 import Joi from 'joi'
 import express from 'express'
 import ErrorMsg from '../errors/message.error.js'
+import errorResponse from '../responses/error.response.js'
 
 /**
  *
@@ -17,33 +18,22 @@ const errorMiddleware = async (err, req, res, next) => {
   }
 
   if (err instanceof Joi.ValidationError) {
-    res
-      .status(422)
-      .json({
-        message: 'Unprocessable Entities',
-        errors: err.details.map((detail) => {
-          return {
-            name: detail.context.label,
-            message: detail.message?.replaceAll('"', ''),
-          }
-        }),
-      })
-      .end()
+    return errorResponse(
+      res,
+      err.details.map((detail) => {
+        return {
+          name: detail.context.label,
+          message: detail.message?.replaceAll('"', ''),
+        }
+      }),
+      'Unprocessable Entities',
+      422
+    )
   } else if (err instanceof ErrorMsg) {
-    res
-      .status(err.status)
-      .json({
-        message: err.message,
-      })
-      .end()
+    return errorResponse(res, null, err.message, err.status)
   } else {
     console.error(err)
-    res
-      .status(500)
-      .json({
-        message: err.message,
-      })
-      .end()
+    return errorResponse(res, null, err.message, 500)
   }
 }
 

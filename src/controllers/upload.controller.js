@@ -12,24 +12,19 @@ import Upload from '../models/Upload.js'
 import ErrorMsg from '../errors/message.error.js'
 import { removeFileInStorage } from '../utils.js'
 
-const todoIdMustExists = async (req, res, next) => {
-  try {
-    const todoId = validate(todoIdValidation, req.params.todoId)
-    const todo = await Todo.findById(todoId)
-    if (!todo) {
-      throw new ErrorMsg(404, 'Todo is not found')
-    }
-
-    return todoId
-  } catch (error) {
-    next(error)
+const todoIdMustExists = async (todoId) => {
+  validate(todoIdValidation, todoId)
+  const todo = await Todo.findById(todoId)
+  if (!todo) {
+    throw new ErrorMsg(404, 'Todo is not found')
   }
+
+  return todoId
 }
 
 const getByTodoId = async (req, res, next) => {
   try {
-    const todoId = todoIdMustExists(req.params.todoId)
-
+    const todoId = await todoIdMustExists(req.params.todoId)
     const uploads = await Upload.find({
       todo_id: todoId,
     })
@@ -49,8 +44,11 @@ const getByTodoId = async (req, res, next) => {
  */
 const create = async (req, res, next) => {
   try {
-    const { label } = validate(uploadCreateValidation, req.body)
-    const todoId = todoIdMustExists(req.params.todoId)
+    const todoId = await todoIdMustExists(req.params.todoId)
+    const { label } = validate(uploadCreateValidation, {
+      ...req.body,
+      filepath: req.file?.path ?? '',
+    })
 
     const upload = await Upload.create({
       todo_id: todoId,
@@ -73,8 +71,8 @@ const create = async (req, res, next) => {
  */
 const update = async (req, res, next) => {
   try {
-    const { label } = validate(uploadUpdateValidation, req.body)
     todoIdMustExists(req.params.todoId)
+    const { label } = validate(uploadUpdateValidation, req.body)
     const uploadId = validate(uploadIdValidation, req.params.uploadId)
 
     let upload = await Upload.findById(uploadId)

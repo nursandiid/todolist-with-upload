@@ -3,7 +3,7 @@ import express from 'express'
 /**
  *
  * @param {express.Response} res
- * @param {array} data
+ * @param {array|null} errors
  * @param {string} message
  * @param {number} status
  * @returns

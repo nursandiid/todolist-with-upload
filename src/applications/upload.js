@@ -1,9 +1,16 @@
 import multer from 'multer'
 import { v4 as uuid } from 'uuid'
+import fs from 'fs'
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'storage/uploads')
+    const path = 'storage/uploads'
+
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path)
+    }
+
+    cb(null, path)
   },
   filename: (req, file, cb) => {
     const ext = file.originalname.split('.').pop()
@@ -35,7 +42,7 @@ const upload = (ignoredMimeTypes) => {
         cb(new Error('Invalid file type'))
         return
       }
-      
+
       cb(null, true)
     },
   })

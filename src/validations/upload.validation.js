@@ -1,7 +1,8 @@
 import Joi from 'joi'
 
 const uploadCreateValidation = Joi.object({
-  label: Joi.string().required().min(3)
+  label: Joi.string().required().min(3),
+  filepath: Joi.string().required()
 })
 
 const uploadUpdateValidation = Joi.object({
