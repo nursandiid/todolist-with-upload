@@ -1,5 +1,4 @@
 node_modules
-storage/*
 .env
 /*.http
 .DS_Store
