@@ -1,5 +1,5 @@
 {
-  "name": "login-system-jwt",
+  "name": "todolist-with-upload",
   "version": "1.0.0",
   "description": "NodeJS Express - TodoList with Upload",
   "main": "src/server.js",
